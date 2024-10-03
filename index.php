@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+if (!isset($_SESSION['player1'])) {
+    session_unset();
+    session_destroy();
+    header("Location: index.php");
+    exit;
+}
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $player1 = isset($_POST['player1']) ? htmlspecialchars($_POST['player1']) : '';
     $player2 = isset($_POST['player2']) ? htmlspecialchars($_POST['player2']) : '';
