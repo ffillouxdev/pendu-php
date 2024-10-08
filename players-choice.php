@@ -2,8 +2,19 @@
 session_start();
 $gamer1 = isset($_SESSION['player1']) ? $_SESSION['player1'] : 'Joueur 1';
 
+if (isset($_POST['reset'])) {
+    header("Location: /index.php");
+    exit;
+}
+
+// Nouvelle partie
+if (isset($_POST['new_game'])) {
+    header("Location: /index.php");
+    exit;
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $word = htmlspecialchars($_POST['word']);   
+    $word = htmlspecialchars($_POST['word']);
     $chances = isset($_POST['chances']) ? htmlspecialchars($_POST['chances']) : '';
 
     $_SESSION['word'] = strtoupper($word);
@@ -36,8 +47,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="flex-container-section">
                 <section class="section-container">
                     <div class="top-right-div">
-                        <button>Reset partie</button>
-                        <button>Nouvelle partie</button>
+                        <form action="" method="POST" style="display: inline;">
+                            <button class="btn-yellow" name="reset">Reset partie</button>
+                        </form>
+                        <form action="" method="POST" style="display: inline;">
+                            <button class="btn-gray" name="new_game">Nouvelle partie</button>
+                        </form>
                     </div>
                     <?php include './components/choices.php'; ?>
                 </section>

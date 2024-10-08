@@ -1,66 +1,83 @@
 <?php
 session_start();
 
-$gamer2 = isset($_SESSION['player2']) ? $_SESSION['player2'] : 'Joueur 2';
-$old_chances = 6; 
-$chances = isset($_SESSION['chances']) ? $_SESSION['chances'] : $old_chances;
-$word = isset($_SESSION['word']) ? str_split($_SESSION['word']) : [];
-$incorrect_letters = isset($_SESSION['incorrect_letters']) ? $_SESSION['incorrect_letters'] : [];
-$correct_letters = isset($_SESSION['correct_letters']) ? $_SESSION['correct_letters'] : [];
+if (!isset($_SESSION['initial_chances'])) {
+    $_SESSION['initial_chances'] = 10;
+}
+if (!isset($_SESSION['chances'])) {
+    $_SESSION['chances'] = $_SESSION['initial_chances'];
+}
+if (!isset($_SESSION['player2'])) {
+    $_SESSION['player2'] = 'Joueur 2';
+}
+if (!isset($_SESSION['word'])) {
+    $_SESSION['word'] = ''; 
+}
+if (!isset($_SESSION['used_letters'])) {
+    $_SESSION['used_letters'] = [];
+}
 
-// Réinitialiser la partie
+$gamer2 = htmlspecialchars($_SESSION['player2']);
+$chances = $_SESSION['chances'];
+$word = isset($_SESSION['word']) ? str_split($_SESSION['word']) : [];
+$used_letters = $_SESSION['used_letters'];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['reset'])) {
-        $_SESSION['chances'] = $old_chances;
-        $_SESSION['incorrect_letters'] = [];
-        $_SESSION['correct_letters'] = [];
+        $_SESSION['used_letters'] = [];
+        $_SESSION['chances'] = $_SESSION['initial_chances'];
     }
 
-    // Nouvelle partie
     if (isset($_POST['new_game'])) {
-        header("Location: /index.php");
+        $_SESSION['used_letters'] = [];
+        $_SESSION['word'] = '';
+        header("Location: /players-choice.php");
         exit;
     }
 
-    // Sélection de lettre
     if (isset($_POST['letter-selector'])) {
         $selected_letter = strtoupper($_POST['letter-selector']);
 
-        // Si la lettre est correcte
-        if (in_array($selected_letter, str_split($_SESSION['word']))) {
-            if (!in_array($selected_letter, $_SESSION['correct_letters'])) {
-                // Ajoute la lettre correcte
-                $_SESSION['correct_letters'][] = $selected_letter;
+        if (!in_array($selected_letter, $used_letters)) {
+            $_SESSION['used_letters'][] = $selected_letter;
+            $used_letters[] = $selected_letter;
+
+            $_SESSION['chances']--;
+            $chances--;
+
+            if ($_SESSION['chances'] <= 0) {
+                $_SESSION['used_letters'] = [];
+                $_SESSION['chances'] = $_SESSION['initial_chances'];
+                header("Location: /game-over.php");
+                exit;
             }
-        } else {
-            // Si la lettre est incorrecte
-            if (!in_array($selected_letter, $_SESSION['incorrect_letters'])) {
-                // Ajoute la lettre incorrecte
-                $_SESSION['incorrect_letters'][] = $selected_letter; 
 
-                // Réduit le nombre de chances
-                $_SESSION['chances']--; 
-
-                // Si le joueur n'a plus de chances, réinitialiser le jeu
-                if ($_SESSION['chances'] <= 0) {
-                    header("Location: /game-over.php");
-                    exit;
+            $all_found = true;
+            foreach ($word as $letter) {
+                if (!in_array($letter, $used_letters)) {
+                    $all_found = false;
+                    break;
                 }
+            }
+            if ($all_found) {
+                header("Location: /victory.php");
+                exit;
             }
         }
     }
 
-    // Deviner le mot complet
     if (isset($_POST['guess'])) {
-        $full_guess = strtoupper(trim($_POST['full-word-guess'])); 
-        if ($full_guess === strtoupper($_SESSION['word'])) {
-            // Si le mot deviné est correct
-            $_SESSION['correct_letters'] = str_split($_SESSION['word']); 
-        } else {
-            $_SESSION['chances']--; 
+        $full_guess = strtoupper(trim($_POST['full-word-guess']));
+        $_SESSION['chances']--;
+        $chances--;
 
+        if ($full_guess === strtoupper(implode('', $word))) {
+            header("Location: /victory.php");
+            exit;
+        } else {
             if ($_SESSION['chances'] <= 0) {
-                // Si le joueur n'a plus de chances
+                $_SESSION['used_letters'] = [];
+                $_SESSION['chances'] = $_SESSION['initial_chances'];
                 header("Location: /game-over.php");
                 exit;
             }
@@ -71,12 +88,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style/style.css">
-    <title><?php echo isset($title) ? $title : 'Hangman Game'; ?></title>
+    <link rel="stylesheet" href="style.css">
+    <title><?php echo isset($title) ? htmlspecialchars($title) : 'Hangman Game'; ?></title>
 </head>
+
 <body>
     <main>
         <div class="flex-container">
@@ -84,10 +103,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <section class="section-container">
                     <div class="top-right-div">
                         <form action="" method="POST" style="display: inline;">
-                            <button name="reset">Reset partie</button>
+                            <button class="btn-yellow" name="reset">Reset partie</button>
                         </form>
                         <form action="" method="POST" style="display: inline;">
-                            <button name="new_game">Nouvelle partie</button>
+                            <button class="btn-gray" name="new_game">Nouvelle partie</button>
                         </form>
                     </div>
                     <?php include './components/game.php'; ?>
@@ -100,4 +119,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </main>
     <?php include 'footer.php'; ?>
 </body>
+
 </html>

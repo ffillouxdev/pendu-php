@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['reset']) && !isset($_POST['new_game'])) {
     $player1 = isset($_POST['player1']) ? htmlspecialchars($_POST['player1']) : '';
     $player2 = isset($_POST['player2']) ? htmlspecialchars($_POST['player2']) : '';
     $_SESSION['player1'] = $player1;
@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style/style.css">
+    <link rel="stylesheet" href="style.css">
     <title><?php echo isset($title) ? $title : 'Hangman Game'; ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="icon" href="assets/favicon.ico">
@@ -31,8 +31,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="flex-container-section">
                 <section class="section-container">
                     <div class="top-right-div">
-                        <button>Reset partie</button>
-                        <button>Nouvelle partie</button>
+                        <form action="" method="POST" style="display: inline;">
+                            <button class="btn-yellow" name="reset">Reset partie</button>
+                        </form>
+                        <form action="" method="POST" style="display: inline;">
+                            <button class="btn-gray" name="new_game">Nouvelle partie</button>
+                        </form>
                     </div>
                     <?php include './components/start_game.php'; ?>
                 </section>

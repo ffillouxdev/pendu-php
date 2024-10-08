@@ -1,16 +1,24 @@
 <?php
 session_start();
+
+if (isset($_POST['new_game'])) {
+    $_SESSION['word'] = '';
+    $_SESSION['used_letters'] = [];
+    header("Location: /index.php");
+    exit;
+}
 ?>
 
 
 <!-- victory.php -->
+
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style/style.css">
+    <link rel="stylesheet" href="style.css">
     <title><?php echo isset($title) ? $title : 'Hangman Game'; ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="icon" href="assets/favicon.ico">
@@ -20,11 +28,11 @@ session_start();
 
 <body>
     <main>
-    <div class="victory-container">
+        <div class="victory-container">
             <h1>Félicitations !</h1>
             <p>Vous avez gagné ! Le mot était <strong><?php echo htmlspecialchars($_SESSION['word']); ?></strong>.</p>
             <form action="" method="POST">
-                <button name="new_game">Nouvelle partie</button>
+                <button class="btn-yellow" name="new_game">Nouvelle partie</button>
             </form>
         </div>
     </main>

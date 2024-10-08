@@ -2,14 +2,15 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f0f0f0;
-    font-family: inter;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 main {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: auto;
+    min-height: 100vh;
     background: url(../assets/bg.jpg) #000 no-repeat center center;
     background-size: cover;
     position: relative;
@@ -59,9 +60,10 @@ main>* {
 }
 
 .section-container .top-right-div {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+    width: 100%;
+    display: flex;
+    align-items: end;
+    justify-content: end;
 }
 
 .top-right-div button {
@@ -72,13 +74,21 @@ main>* {
     cursor: pointer;
 }
 
-.top-right-div button:nth-child(1) {
+.btn-yellow {
     background-color: #FFD700;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-right: 4px;
 }
 
-.top-right-div button:nth-child(2) {
+.btn-gray {
     background-color: #333333;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
 }
+
 
 
 .players_stats_container {
@@ -100,6 +110,22 @@ main>* {
     margin-top: 10px;
 }
 
+.guess-form-container input{
+    padding: 4px;
+    width: 100px;
+    border-radius: 2px;
+    border: none;
+}
+
+.guess-form-container button {
+    padding: 4px;
+    border-radius: 2px;
+    background-color: #FFD700;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
 .players_stats_container hr {
     width: 20%;
     margin: 0 auto;
@@ -110,6 +136,7 @@ main>* {
 .players_stats_container table {
     color: white;
     font-size: 11px;
+    width: 100%;
 }
 
 footer {
@@ -355,9 +382,9 @@ main {
     background-color: #fff;
     color: #333;
 }
-    
 
-.game-over-container{
+
+.game-over-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -379,4 +406,199 @@ main {
     background-color: #FFD700;
     text-decoration: none;
     color: white;
+}
+
+.victory-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #333333;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 55%;
+    margin: 20px;
+}
+
+.victory-container a {
+    padding: 10px;
+    font-weight: bold;
+    margin: 10px;
+    width: 420px;
+    border-radius: 10px;
+    background-color: #FFD700;
+    text-decoration: none;
+    color: white;
+}
+
+/* Styles généraux */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    font-family: inter;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    min-height: 100vh;
+    background: url(../assets/bg.jpg) #000 no-repeat center center;
+    background-size: cover;
+    position: relative;
+}
+
+main::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+main>* {
+    position: relative;
+    z-index: 2;
+}
+
+/* Styles pour les grands écrans */
+@media (min-width: 1024px) {
+    .flex-container {
+        display: flex;
+        flex-direction: row-reverse;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        margin-right: 5%;
+    }
+
+    .flex-container-section {
+        display: flex;
+        width: 100%;
+        align-items: start;
+        flex-direction: row-reverse;
+    }
+
+    .section-container {
+        background-color: #333333;
+        color: white;
+        padding: 20px;
+        border-radius: 5%;
+        width: 55%;
+        margin: 20px;
+        height: 70vh;
+        opacity: 80%;
+    }
+
+    .players_stats_container {
+        height: 55vh;
+        width: 350px;
+        padding: 10px;
+        background-color: #333333;
+        opacity: 80%;
+        border-radius: 5%;
+        margin-top: 5%;
+    }
+
+    .start-form-container,
+    .choices-form-container,
+    .game-over-container,
+    .victory-container {
+        width: 55%;
+    }
+
+    .start-game-container,
+    .container-choices {
+        width: 90%;
+    }
+}
+
+/* Styles pour les tablettes */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .flex-container {
+        flex-direction: column-reverse;
+        align-items: center;
+        margin-right: 0;
+    }
+
+    .flex-container-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .section-container,
+    .start-form-container,
+    .choices-form-container,
+    .game-over-container,
+    .victory-container {
+        width: 85vw;
+        margin: 10px;
+    }
+
+    .players_stats_container {
+        width: 85vw;
+        margin-top: 10px;
+    }
+
+    .start-game-container,
+    .container-choices {
+        width: 95%;
+    }
+}
+
+/* Styles pour les mobiles */
+@media (max-width: 767px) {
+    .flex-container {
+        flex-direction: column-reverse;
+        align-items: center;
+        margin-right: 0;
+    }
+
+    .flex-container-section {
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+
+    .section-container,
+    .start-form-container,
+    .choices-form-container,
+    .game-over-container,
+    .victory-container {
+        width: 85vw;
+        margin: 10px;
+    }
+
+    .players_stats_container {
+        width: 90vw;
+        margin-top: 10px;
+
+    }
+
+   
+
+    .start-game-container,
+    .container-choices {
+        width: 100%;
+    }
+
+    .start-game-container button,
+    .container-choices button,
+    .game-form-container button,
+    .game-over-container a,
+    .victory-container a {
+        width: 100%;
+    }
+
+    .start-form-container input,
+    .choices-form-container input,
+    .game-form-container input,
+    .letter-combobox {
+        width: 100%;
+    }
 }
