@@ -1,6 +1,4 @@
 <?php
-// phpinfo();
-
 $host = 'localhost';
 $dbname = 'hangman_game';
 $username = 'root';
@@ -14,22 +12,19 @@ try {
     exit();
 }
 
-
-// recupere toutes les donnees
+// Récupère toutes les données de la table game_partie
 function get_all_data($pdo)
 {
-    $stmt = $pdo->query('SELECT game_partie FROM hangman_game');
-    // met les datas dans le tableau 
+    $stmt = $pdo->query('SELECT * FROM game_partie');
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-
 function post_all_data($pdo, $nom_joueur1, $nom_joueur2, $mot, $nb_chances, $victoire)
 {
-    // on prepare la requete sql
-    $stmt = $pdo->prepare('INSERT INTO hangman_game (nom_joueur1, nom_joueur2, mot, nb_chances, victoire) VALUES (?, ?, ?, ?, ?)');
 
-    // on execute la requete avec les donnees fournies
-    $stmt->execute([$nom_joueur1, $nom_joueur2, $mot, $nb_chances, $victoire]);
+    
+    $heure = date('H:i:s');
+    $stmt = $pdo->prepare('INSERT INTO game_partie (heure, player_name1, player_name2, number_of_chances, word_found, victory) VALUES (?, ?, ?, ?, ?, ?)');
+    $stmt->execute([$heure, $nom_joueur1, $nom_joueur2, $nb_chances, $mot, $victoire]);
 }
 ?>

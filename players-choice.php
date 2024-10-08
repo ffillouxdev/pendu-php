@@ -15,14 +15,16 @@ if (isset($_POST['new_game'])) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $word = htmlspecialchars($_POST['word']);
-    $chances = isset($_POST['chances']) ? htmlspecialchars($_POST['chances']) : '';
+    $chances = isset($_POST['chances']) ? htmlspecialchars($_POST['chances']) : 10;   
+    $_SESSION['initial_chances'] = isset($_POST['chances']) ? htmlspecialchars($_POST['chances']) : 10;
 
     $_SESSION['word'] = strtoupper($word);
-    $_SESSION['chances'] = $chances;
+    $_SESSION['chances'] = $chances;  
 
-    header("Location: /hangman.php");
+    header("Location: /myproject/TP-pendu/hangman.php");
     exit;
 }
+
 ?>
 
 
@@ -33,10 +35,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style/style.css">
+    <link rel="stylesheet" href="http://localhost/myproject/TP-pendu/style/style.css">
     <title><?php echo isset($title) ? $title : 'Hangman Game'; ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="icon" href="assets/favicon.ico">
+    <link rel="icon" href="http://localhost/myproject/TP-pendu/assets/favicon.ico">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 </head>
@@ -63,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </main>
 
-    <?php include 'footer.php'; ?>
+    <?php include './components/footer.php'; ?>
 </body>
 
 </html>
