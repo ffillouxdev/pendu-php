@@ -12,7 +12,7 @@
                 if (in_array($word[$i], $correct_letters)) {
                     echo "<span class='word-letter'>" . htmlspecialchars($word[$i]) . " </span>";  
                 } else {
-                    echo "<span class='word-letter'>_ </span>"; 
+                    echo "<span class='word-letter'> _ </span>"; 
                 }
             }
             ?>
@@ -24,7 +24,6 @@
                 $letters_available = range('A', 'Z');
                 $letters_incorrect = $_SESSION['incorrect_letters'];
 
-                // Exclure les lettres incorrectes
                 $letters_to_display = array_diff($letters_available, $letters_incorrect);
 
                 if (empty($letters_to_display)) {
@@ -38,25 +37,10 @@
             </select>
             <button>CONFIRMER</button>
         </form>
-
         <form action="" method="POST" class="guess-form-container">
             <input type="text" name="full-word-guess" placeholder="Devinez le mot" required />
             <button type="submit" name="guess">DEVINER</button>  
         </form>
-        
-        <!-- Vérification de la victoire -->
-        <?php
-        if (count($correct_letters) === count(array_unique($word))) {
-            header("Location: /victory.php");  
-            exit;
-        }
-        
-         if ($chances <= 0) {
-            // Si le joueur n'a plus de chances
-            header("Location: /game-over.php"); // Redirige vers la page de défaite
-            exit;
-        }
-        ?>
     </div>
     <div class="bottom-div">
         <hr class="loading-process-hr">

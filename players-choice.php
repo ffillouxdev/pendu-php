@@ -3,10 +3,10 @@ session_start();
 $gamer1 = isset($_SESSION['player1']) ? $_SESSION['player1'] : 'Joueur 1';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $word = isset($_POST['word']) ? htmlspecialchars($_POST['word']) : '';
+    $word = htmlspecialchars($_POST['word']);   
     $chances = isset($_POST['chances']) ? htmlspecialchars($_POST['chances']) : '';
 
-    $_SESSION['word'] = $word;
+    $_SESSION['word'] = strtoupper($word);
     $_SESSION['chances'] = $chances;
 
     header("Location: /hangman.php");

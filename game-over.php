@@ -24,7 +24,7 @@ session_start();
             <h1>Désolé !</h1>
             <p>Vous avez perdu ! Le mot était <strong><?php echo htmlspecialchars($_SESSION['word']); ?></strong>.</p>
             <form action="" method="POST">
-                <button name="new_game">Nouvelle partie</button>
+                <a href="/index.php">Retour à l'accueil</a>
             </form>
         </div>
     </main>
